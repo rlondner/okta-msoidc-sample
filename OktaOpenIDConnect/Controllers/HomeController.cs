@@ -20,6 +20,13 @@ namespace OktaOpenIDConnect.Controllers
             return View();
         }
 
+        public ActionResult Claims()
+        {
+            ViewBag.Message = "Your claims.";
+
+            return View();
+        }
+
         [Authorize]
         public ActionResult Contact()
         {
