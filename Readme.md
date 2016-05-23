@@ -1,4 +1,4 @@
-# Okta ASP.NET MVC OpenID Connection with OWIN (Microsoft library)
+# Okta ASP.NET MVC OpenID Connect with OWIN (Microsoft library)
 This is a a code sample demonstrating the use of OpenID Connect with Okta and the Microsoft.Owin.Security.OpenIdConnect library.
 
 ###Setup
