@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/Api
+/OktaOpenIDConnect/Controllers/CallApiController.cs
+/OktaOpenIDConnect/Views/CallApi

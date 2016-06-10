@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{65DCED
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{8D050E03-FF24-404E-8E5D-10AD9CB27B02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Okta.OpenIdConnect.TokenValidation", "..\oktasdk-csharp\Okta.OpenIdConnect.TokenValidation\Okta.OpenIdConnect.TokenValidation.csproj", "{1594B2D4-19D6-43FA-AC0E-D44DC6112C59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{8D55C09E-77EA-43AD-A70D-004B040B5A63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D55C09E-77EA-43AD-A70D-004B040B5A63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D55C09E-77EA-43AD-A70D-004B040B5A63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D050E03-FF24-404E-8E5D-10AD9CB27B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D050E03-FF24-404E-8E5D-10AD9CB27B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D050E03-FF24-404E-8E5D-10AD9CB27B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D050E03-FF24-404E-8E5D-10AD9CB27B02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1594B2D4-19D6-43FA-AC0E-D44DC6112C59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1594B2D4-19D6-43FA-AC0E-D44DC6112C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1594B2D4-19D6-43FA-AC0E-D44DC6112C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1594B2D4-19D6-43FA-AC0E-D44DC6112C59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

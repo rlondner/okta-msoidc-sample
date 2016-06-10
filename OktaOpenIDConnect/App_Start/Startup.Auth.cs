@@ -9,6 +9,7 @@ using System.Configuration;
 using IdentityModel.Client;
 using System;
 
+
 namespace OktaOpenIDConnect
 {
     public partial class Startup
@@ -46,6 +47,7 @@ namespace OktaOpenIDConnect
                 Authority = oidcAuthority,
                 RedirectUri = oidcRedirectUri,
                 ResponseType = oidcResponseType,
+                Scope = "openid profile offline_access",
 
                 SignInAsAuthenticationType = "Cookies",
                 UseTokenLifetime = false,
@@ -109,6 +111,14 @@ namespace OktaOpenIDConnect
                 }
 
             });
+
+            //app.UseOktaBearerTokenAuthentication(new OktaBearerTokenAuthenticationOptions
+            //{
+            //    OrganizationUrl = System.Configuration.ConfigurationManager.AppSettings["OpenIDConnect_Authority"],
+            //    ClientId = System.Configuration.ConfigurationManager.AppSettings["OpenIDConnect_ClientId"],
+            //});
+
+
         }
     }
 }

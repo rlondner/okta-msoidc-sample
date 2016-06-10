@@ -148,8 +148,9 @@ namespace Microsoft.Owin.Security.OpenIdConnect
                     ResponseType = Options.ResponseType,
                     Scope = Options.Scope,
                     // State = OpenIdConnectAuthenticationDefaults.AuthenticationPropertiesKey + "=" + Uri.EscapeDataString(Options.StateDataFormat.Protect(properties)),
+                    State = OpenIdConnectAuthenticationDefaults.AuthenticationPropertiesKey + "5" + Uri.EscapeDataString(Options.StateDataFormat.Protect(properties)),
                     //State = OpenIdConnectAuthenticationDefaults.AuthenticationPropertiesKey + Uri.EscapeDataString(Options.StateDataFormat.Protect(properties)),
-                    State =  Uri.EscapeDataString(Options.StateDataFormat.Protect(properties)),
+                    //State =  Uri.EscapeDataString(Options.StateDataFormat.Protect(properties)),
                 };
 
                 if (Options.ProtocolValidator.RequireNonce)
@@ -553,7 +554,8 @@ namespace Microsoft.Owin.Security.OpenIdConnect
             }
 
             int authenticationIndex = startIndex + OpenIdConnectAuthenticationDefaults.AuthenticationPropertiesKey.Length;
-            if (authenticationIndex == -1 || authenticationIndex == state.Length || state[authenticationIndex] != '=')
+            //if (authenticationIndex == -1 || authenticationIndex == state.Length || state[authenticationIndex] != '=')
+                if (authenticationIndex == -1 || authenticationIndex == state.Length || state[authenticationIndex] != '5')
             {
                 return null;
             }
@@ -561,6 +563,7 @@ namespace Microsoft.Owin.Security.OpenIdConnect
             // scan rest of string looking for '&'
             authenticationIndex++;
             int endIndex = state.Substring(authenticationIndex, state.Length - authenticationIndex).IndexOf("&", StringComparison.Ordinal);
+//            int endIndex = state.Substring(authenticationIndex, state.Length - authenticationIndex).IndexOf("5", StringComparison.Ordinal);
 
             // -1 => no other parameters are after the AuthenticationPropertiesKey
             if (endIndex == -1)
@@ -569,6 +572,7 @@ namespace Microsoft.Owin.Security.OpenIdConnect
             }
             else
             {
+                string s = state.Substring(authenticationIndex, endIndex);
                 return Options.StateDataFormat.Unprotect(Uri.UnescapeDataString(state.Substring(authenticationIndex, endIndex).Replace('+', ' ')));
             }
         }

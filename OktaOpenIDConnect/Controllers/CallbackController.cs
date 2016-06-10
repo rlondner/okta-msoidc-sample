@@ -108,6 +108,7 @@ namespace OktaOpenIDConnect.Controllers
                 {
                     claims.AddRange(await GetUserInfoClaimsAsync(response.AccessToken));
 
+                    claims.Add(new Claim("id_token", response.IdentityToken));
                     claims.Add(new Claim("access_token", response.AccessToken));
                     claims.Add(new Claim("expires_at", (DateTime.UtcNow.ToEpochTime() + response.ExpiresIn).ToDateTimeFromEpoch().ToString()));
                 }

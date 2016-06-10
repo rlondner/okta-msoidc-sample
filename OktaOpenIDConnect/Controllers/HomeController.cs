@@ -1,8 +1,8 @@
-﻿using IdentityModel.Client;
-using System;
-using System.Configuration;
-using System.Security.Claims;
+﻿using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
+using System.Web;
 using System.Web.Mvc;
+
 
 namespace OktaOpenIDConnect.Controllers
 {
@@ -31,6 +31,13 @@ namespace OktaOpenIDConnect.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        public ActionResult SignOut()
+        {
+            Request.GetOwinContext().Authentication.SignOut(OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
 
             return View();
         }
