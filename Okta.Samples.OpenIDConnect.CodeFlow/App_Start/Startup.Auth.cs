@@ -8,9 +8,10 @@ using Owin;
 using System.Configuration;
 using IdentityModel.Client;
 using System;
+using System.Security.Claims;
 
 
-namespace OktaOpenIDConnect
+namespace Okta.Samples.OpenIDConnect.CodeFlow
 {
     public partial class Startup
     {
@@ -58,12 +59,16 @@ namespace OktaOpenIDConnect
                     {
                         // use the code to get the access and refresh token
                         var tokenClient = new TokenClient(
-                            oidcAuthority + "/oauth2/v1/token",
+                            oidcAuthority + Constants.TokenEndpoint,
                             oidcClientId,
-                            oidcClientSecret);
+                            oidcClientSecret, AuthenticationStyle.PostValues);
+
+                        //var tokenResponse = await tokenClient.RequestAuthorizationCodeAsync(
+                        //    n.Code, n.RedirectUri);
 
                         var tokenResponse = await tokenClient.RequestAuthorizationCodeAsync(
-                            n.Code, n.RedirectUri);
+    n.Code, n.RedirectUri);
+
 
                         if (tokenResponse.IsError)
                         {
@@ -71,25 +76,26 @@ namespace OktaOpenIDConnect
                         }
 
                         // use the access token to retrieve claims from userinfo
-                        //var userInfoClient = new UserInfoClient(
-                        //new Uri(Constants.UserInfoEndpoint),
-                        //tokenResponse.AccessToken);
+                        var userInfoClient = new UserInfoClient(new Uri(oidcAuthority + Constants.UserInfoEndpoint), tokenResponse.AccessToken);
 
-                        //var userInfoResponse = await userInfoClient.GetAsync();
+                        var userInfoResponse = await userInfoClient.GetAsync();
 
                         //// create new identity
-                        //var id = new ClaimsIdentity(n.AuthenticationTicket.Identity.AuthenticationType);
-                        //id.AddClaims(userInfoResponse.GetClaimsIdentity().Claims);
+                        var id = new ClaimsIdentity(n.AuthenticationTicket.Identity.AuthenticationType);
+                        id.AddClaims(userInfoResponse.GetClaimsIdentity().Claims);
 
-                        //id.AddClaim(new Claim("access_token", tokenResponse.AccessToken));
-                        //id.AddClaim(new Claim("expires_at", DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToLocalTime().ToString()));
-                        //id.AddClaim(new Claim("refresh_token", tokenResponse.RefreshToken));
-                        //id.AddClaim(new Claim("id_token", n.ProtocolMessage.IdToken));
+                        id.AddClaim(new Claim("id_token", n.ProtocolMessage.IdToken));
+                        id.AddClaim(new Claim("access_token", tokenResponse.AccessToken));
+                        id.AddClaim(new Claim("expires_at", DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToLocalTime().ToString()));
+                        if (tokenResponse.RefreshToken != null)
+                        {
+                            id.AddClaim(new Claim("refresh_token", tokenResponse.RefreshToken));
+                        }
                         //id.AddClaim(new Claim("sid", n.AuthenticationTicket.Identity.FindFirst("sid").Value));
 
-                        //n.AuthenticationTicket = new AuthenticationTicket(
-                        //    new ClaimsIdentity(id.Claims, n.AuthenticationTicket.Identity.AuthenticationType, "name", "role"),
-                        //    n.AuthenticationTicket.Properties);
+                        n.AuthenticationTicket = new AuthenticationTicket(
+                            new ClaimsIdentity(id.Claims, n.AuthenticationTicket.Identity.AuthenticationType),
+                            n.AuthenticationTicket.Properties);
                     },
 
                 //    RedirectToIdentityProvider = n =>

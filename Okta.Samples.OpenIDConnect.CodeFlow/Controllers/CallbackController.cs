@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OktaOpenIDConnect.Controllers
+namespace Okta.Samples.OpenIDConnect.CodeFlow.Controllers
 {
     public class CallbackController : Controller
     {
@@ -31,7 +31,7 @@ namespace OktaOpenIDConnect.Controllers
             var state = form["state"];
             var tempState = await GetTempStateAsync();
 
-            if (tempState!=null && state.Equals(tempState.Item1, StringComparison.Ordinal))
+            if (tempState != null && state.Equals(tempState.Item1, StringComparison.Ordinal))
             {
                 ViewBag.State = state + " (valid)";
             }
@@ -47,7 +47,7 @@ namespace OktaOpenIDConnect.Controllers
 
             return View("Token", response);
 
-//            return View();
+            //            return View();
         }
 
         [HttpPost]
@@ -59,17 +59,40 @@ namespace OktaOpenIDConnect.Controllers
             return View("Token", response);
         }
 
+        [Authorize]
+        public ActionResult Tokens()
+        {
+            ViewBag.Message = "View Tokens";
+
+            if (HttpContext.GetOwinContext() != null && HttpContext.GetOwinContext().Authentication.User != null)
+            {
+                ClaimsPrincipal currentUser = HttpContext.GetOwinContext().Authentication.User;
+
+                var idToken = HttpContext.GetOwinContext().Authentication.User.FindFirst("id_token");
+                if (idToken != null)
+                    ViewBag.IdentityTokenParsed = ParseJwt(idToken.Value);
+
+                var accessToken = HttpContext.GetOwinContext().Authentication.User.FindFirst("access_token");
+                if (accessToken != null)
+                    ViewBag.AccessTokenParsed = ParseJwt(accessToken.Value);
+
+                var refreshToken = HttpContext.GetOwinContext().Authentication.User.FindFirst("refresh_token");
+                if (refreshToken != null)
+                    ViewBag.RefreshToken = refreshToken.Value;
+            }
+
+            return View();
+        }
+
         private async Task<TokenResponse> GetTokenFromAuthServer()
         {
-
             string oidcClientId = ConfigurationManager.AppSettings["OpenIDConnect_ClientId"];
             string oidcClientSecret = ConfigurationManager.AppSettings["OpenIDConnect_ClientSecret"];
             string oktaTenantUrl = ConfigurationManager.AppSettings["OpenIDConnect_Authority"];
             string oidcRedirectUrl = ConfigurationManager.AppSettings["OpenIDConnect_RedirectUri"];
 
-
             var client = new TokenClient(
-                oktaTenantUrl + "/oauth2/v1/token",
+                oktaTenantUrl + Constants.TokenEndpoint,
                 oidcClientId,
                 oidcClientSecret,
                 AuthenticationStyle.PostValues);
@@ -93,7 +116,6 @@ namespace OktaOpenIDConnect.Controllers
                 ViewBag.AccessTokenParsed = ParseJwt(response.AccessToken);
             }
 
-
             return response;
         }
 
@@ -101,7 +123,6 @@ namespace OktaOpenIDConnect.Controllers
         {
             if (!string.IsNullOrWhiteSpace(response.IdentityToken))
             {
-                //var tokenClaims = ValidateToken(response.IdentityToken, nonce);
                 var claims = new List<Claim>();
 
                 if (!string.IsNullOrWhiteSpace(response.AccessToken))
@@ -123,37 +144,11 @@ namespace OktaOpenIDConnect.Controllers
             }
         }
 
-        private List<Claim> ValidateToken(string token, string nonce)
-        {
-            var certString = "MIIDBTCCAfGgAwIBAgIQNQb+T2ncIrNA6cKvUA1GWTAJBgUrDgMCHQUAMBIxEDAOBgNVBAMTB0RldlJvb3QwHhcNMTAwMTIwMjIwMDAwWhcNMjAwMTIwMjIwMDAwWjAVMRMwEQYDVQQDEwppZHNydjN0ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqnTksBdxOiOlsmRNd+mMS2M3o1IDpK4uAr0T4/YqO3zYHAGAWTwsq4ms+NWynqY5HaB4EThNxuq2GWC5JKpO1YirOrwS97B5x9LJyHXPsdJcSikEI9BxOkl6WLQ0UzPxHdYTLpR4/O+0ILAlXw8NU4+jB4AP8Sn9YGYJ5w0fLw5YmWioXeWvocz1wHrZdJPxS8XnqHXwMUozVzQj+x6daOv5FmrHU1r9/bbp0a1GLv4BbTtSh4kMyz1hXylho0EvPg5p9YIKStbNAW9eNWvv5R8HN7PPei21AsUqxekK0oW9jnEdHewckToX7x5zULWKwwZIksll0XnVczVgy7fCFwIDAQABo1wwWjATBgNVHSUEDDAKBggrBgEFBQcDATBDBgNVHQEEPDA6gBDSFgDaV+Q2d2191r6A38tBoRQwEjEQMA4GA1UEAxMHRGV2Um9vdIIQLFk7exPNg41NRNaeNu0I9jAJBgUrDgMCHQUAA4IBAQBUnMSZxY5xosMEW6Mz4WEAjNoNv2QvqNmk23RMZGMgr516ROeWS5D3RlTNyU8FkstNCC4maDM3E0Bi4bbzW3AwrpbluqtcyMN3Pivqdxx+zKWKiORJqqLIvN8CT1fVPxxXb/e9GOdaR8eXSmB0PgNUhM4IjgNkwBbvWC9F/lzvwjlQgciR7d4GfXPYsE1vf8tmdQaY8/PtdAkExmbrb9MihdggSoGXlELrPA91Yce+fiRcKY3rQlNWVd4DOoJ/cPXsXwry8pWjNCo5JD8Q+RQ5yZEy7YPoifwemLhTdsBz3hlZr28oCGJ3kbnpW0xGvQb3VHSTVVbeei0CfXoW6iz1";
-            var cert = new X509Certificate2(Convert.FromBase64String(certString));
-
-            var parameters = new TokenValidationParameters
-            {
-                //ValidAudience = "codeclient",
-                //ValidIssuer = Constants.BaseAddress,
-                //IssuerSigningToken = new X509SecurityToken(cert)
-            };
-
-            SecurityToken jwt;
-            var principal = new JwtSecurityTokenHandler().ValidateToken(token, parameters, out jwt);
-
-            // validate nonce
-            var nonceClaim = principal.FindFirst("nonce");
-
-            if (!string.Equals(nonceClaim.Value, nonce, StringComparison.Ordinal))
-            {
-                throw new Exception("invalid nonce");
-            }
-
-            return principal.Claims.ToList();
-        }
-
         private async Task<IEnumerable<Claim>> GetUserInfoClaimsAsync(string accessToken)
         {
             string oktaTenantUrl = ConfigurationManager.AppSettings["OpenIDConnect_Authority"];
 
-            var userInfoClient = new UserInfoClient(new Uri(oktaTenantUrl + "/oauth2/v1/userinfo" ), accessToken);
+            var userInfoClient = new UserInfoClient(new Uri(oktaTenantUrl + Constants.UserInfoEndpoint), accessToken);
 
             var userInfo = await userInfoClient.GetAsync();
 

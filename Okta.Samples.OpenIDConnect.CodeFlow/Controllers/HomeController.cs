@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 
 
-namespace OktaOpenIDConnect.Controllers
+namespace Okta.Samples.OpenIDConnect.CodeFlow.Controllers
 {
     public class HomeController : Controller
     {
@@ -27,13 +27,6 @@ namespace OktaOpenIDConnect.Controllers
             return View();
         }
 
-        [Authorize]
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
 
         public ActionResult SignOut()
         {
@@ -55,29 +48,10 @@ namespace OktaOpenIDConnect.Controllers
                 string authCode = form["code"];
                 string state = form["state"];
 
-                //string oidcClientId = ConfigurationManager.AppSettings["OpenIDConnect_ClientId"];
-                //string oidcClientSecret = ConfigurationManager.AppSettings["OpenIDConnect_ClientSecret"];
-                //string oktaTenantUrl = ConfigurationManager.AppSettings["OpenIDConnect_Authority"];
-
-                //var tokenClient = new TokenClient(
-                //    oktaTenantUrl + "/oauth2/v1/token",
-                //    oidcClientId,
-                //    oidcClientSecret);
-
-                //var tokenResponse = tokenClient.RequestAuthorizationCodeAsync(authCode, Request.UserHostAddress + "/Home/Claims");
-
-                //if (tokenResponse.Is)
-                //{
-                //    throw new Exception(tokenResponse.Error);
-                //}
-
-
-
-                //return View((User as ClaimsPrincipal).Claims);
-
             }
 
             return View();
         }
+
     }
 }

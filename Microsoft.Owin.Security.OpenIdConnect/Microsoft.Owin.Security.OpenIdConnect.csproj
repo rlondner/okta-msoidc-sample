@@ -67,6 +67,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Notifications\AuthorizationCodeReceivedNotification.cs" />
     <Compile Include="OpenIdConnectAuthenticationDefaults.cs" />

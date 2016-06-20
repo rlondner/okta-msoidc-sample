@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace OktaOpenIDConnect
+namespace Okta.Samples.OpenIDConnect.CodeFlow
 {
     public class RouteConfig
     {

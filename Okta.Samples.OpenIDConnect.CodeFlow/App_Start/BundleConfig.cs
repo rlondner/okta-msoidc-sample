@@ -1,6 +1,6 @@
 ﻿using System.Web.Optimization;
 
-namespace OktaOpenIDConnect
+namespace Okta.Samples.OpenIDConnect.CodeFlow
 {
     public class BundleConfig
     {

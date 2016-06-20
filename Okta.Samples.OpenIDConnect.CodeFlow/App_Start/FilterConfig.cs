@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace OktaOpenIDConnect
+namespace Okta.Samples.OpenIDConnect.CodeFlow
 {
     public class FilterConfig
     {

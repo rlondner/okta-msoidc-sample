@@ -2,7 +2,7 @@
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace OktaOpenIDConnect
+namespace Okta.Samples.OpenIDConnect.CodeFlow
 {
     public class MvcApplication : System.Web.HttpApplication
     {

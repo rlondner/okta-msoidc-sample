@@ -2,10 +2,10 @@
 This is a a code sample demonstrating the use of OpenID Connect with Okta and the Microsoft.Owin.Security.OpenIdConnect library.
 
 ###Setup
-1. Open the OktaOpenIDConnect solution in Visual Studio 2015 and restore all NuGet packages
+1. Open the Okta.Samples.OpenIDConnect.CodeFlow.sln solution in Visual Studio 2015 and restore all NuGet packages
 2. In the  Microsoft.Owin.Security.OpenIdConnect project, remove the reference to the Microsoft.Owin.Security.OpenIdConnect assemblu, then compile the project
-3. In the OktaOpenIDConnect project, verify that the reference to the Microsoft.Owin.Security.OpenIdConnect assembly points to the Microsoft.Owin.Security.OpenIdConnect project, not the NuGet package.
-4. Compile and run the OktaOpenIDConnect project. It should open the sample web application at https://localhost:44327
+3. In the Okta.Samples.OpenIDConnect.CodeFlow project, verify that the reference to the Microsoft.Owin.Security.OpenIdConnect assembly points to the Microsoft.Owin.Security.OpenIdConnect project, not the NuGet package.
+4. Compile and run the Okta.Samples.OpenIDConnect.CodeFlow project. It should open the sample web application at https://localhost:44327
 5. Click on "Sign in with OpenID Connect" and sign in with the following Okta credentials:
 
 Username: bob

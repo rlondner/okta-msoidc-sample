@@ -1,9 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(OktaOpenIDConnect.Startup))]
+[assembly: OwinStartup(typeof(Okta.Samples.OpenIDConnect.CodeFlow.Startup))]
 
-namespace OktaOpenIDConnect
+namespace Okta.Samples.OpenIDConnect.CodeFlow
 {
     public partial class Startup
     {

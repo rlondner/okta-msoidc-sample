@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OktaOpenIDConnect.Controllers
+namespace Okta.Samples.OpenIDConnect.CodeFlow.Controllers
 {
     public class AppController : Controller
     {
